@@ -7,33 +7,39 @@ export default function Home() {
   const demos = [
     {
       id: "react-memo",
-      title: "React.memo",
+      title: "1. React.memo",
       description: "Learn how to optimize component rendering with React.memo to prevent unnecessary re-renders",
       path: "/demos/react-memo"
     },
     {
       id: "react-memo-2",
-      title: "React.memo with Objects",
+      title: "2. React.memo with Objects",
       description: "Learn how to properly use React.memo with object props to prevent unnecessary re-renders",
       path: "/demos/react-memo-2"
     },
     {
       id: "use-callback",
-      title: "useCallback",
+      title: "3. useCallback",
       description: "Learn how to prevent unnecessary re-renders caused by function props using useCallback",
       path: "/demos/use-callback"
     },
     {
       id: "react-memo-children",
-      title: "React.memo with Children",
+      title: "4. React.memo with Children",
       description: "Learn how to properly optimize components that receive children props using React.memo and useMemo",
       path: "/demos/react-memo-children"
     },
     {
       id: "context-performance",
-      title: "Context Performance",
+      title: "5. Context Performance",
       description: "Learn how to optimize React Context and prevent unnecessary re-renders by splitting contexts and memoizing values",
       path: "/demos/context-performance"
+    },
+    {
+      id: "performance-guidelines",
+      title: "6. General Guidelines",
+      description: "General React performance guidelines and best practices that can reduce the need for explicit memoization",
+      path: "/demos/performance-guidelines"
     },
     {
       id: "exercise",

@@ -59,6 +59,10 @@ const SolutionDemo = () => {
         <CodeHighlight code={`// Create a memoized version of the component
 const MemoizedComponent = React.memo(ExpensiveComponent);
 
+// This simple solution will also work
+//const configA = { label: "Component A", color: "red" } 
+//const configB = { label: "Component B", color: "green" } 
+
 function ParentComponent() {
   const [count, setCount] = useState(0);
   

@@ -37,20 +37,7 @@ function MyComponent() {
   isActive: isSelected
 }), [id, selectedColor, isSelected]); // Recreates when dependencies change`} />
         </li>
-        <li>
-          <strong>Consider useCallback for function props</strong> - Like objects, inline functions create new references on each render
-          <CodeHighlight code={`// BAD: Creates new function on every render
-<MemoizedComponent 
-  onClick={() => handleItemClick(item.id)} 
-/>
-
-// GOOD: Stable function reference
-const handleClick = useCallback(() => {
-  handleItemClick(item.id);
-}, [item.id]); // Only changes when item.id changes
-
-<MemoizedComponent onClick={handleClick} />`} />
-        </li>
+        
         <li>
           <strong>Use custom comparison function when needed</strong> - For complex objects, provide a custom comparison function to React.memo
           <CodeHighlight code={`const MemoizedComponent = React.memo(Component, 
@@ -63,6 +50,84 @@ const handleClick = useCallback(() => {
     );
   }
 );`} />
+        </li>
+        <li>
+          <strong>Avoid side effects in memoized components</strong> - React's Strict Mode will render components twice in development to help detect issues
+          <CodeHighlight code={`// BAD: Side effect in component body
+const MemoizedComponent = React.memo(function Component(props) {
+  // This will run twice in Strict Mode!
+  saveToDatabase(props.data);
+  
+  return <div>{props.data.name}</div>;
+});
+
+// GOOD: Use useEffect for side effects
+const MemoizedComponent = React.memo(function Component(props) {
+  useEffect(() => {
+    // This will still run twice in Strict Mode,
+    // but React handles cleanup between runs
+    saveToDatabase(props.data);
+    
+    // Optional cleanup function
+    return () => {
+      // Clean up any resources if needed
+    };
+  }, [props.data]);
+  
+  return <div>{props.data.name}</div>;
+});`} />
+        </li>
+        <li>
+          <strong>Use useMemo as an optimization, not a fix</strong> - If your code doesn't work without useMemo, there's likely an underlying issue to address first.
+          <div>Keep your rendering logic pure. If re-rendering a component causes a problem or produces some noticeable visual artifact, it's a bug in your component! Fix the bug instead of adding memoization.</div>
+          <CodeHighlight code={`// BAD: Using useMemo to "fix" a broken component
+function BrokenComponent() {
+  // This component has a bug that causes infinite loops
+  // Adding useMemo is just masking the real problem
+  const data = useMemo(() => processData(), []); 
+  return <div>{data}</div>;
+}
+
+// GOOD: Fix the underlying issue first, then optimize
+function FixedComponent() {
+  // First ensure the component works correctly without memoization
+  // Then add useMemo as a performance optimization
+  const expensiveData = useMemo(() => {
+    return computeExpensiveValue(a, b);
+  }, [a, b]);
+  
+  return <div>{expensiveData}</div>;
+}`} />
+          
+        </li>
+        <li>
+          <strong>Use useMemo for objects in dependency arrays</strong> - Wrap objects used in dependency arrays of useEffect, useCallback, and other useMemos
+          <CodeHighlight code={`// BAD: Object reference changes on every render
+function Component() {
+  const options = { id: userId, sort: 'asc' };
+  
+  // This effect runs on EVERY render because options is a new object each time
+  useEffect(() => {
+    fetchData(options);
+  }, [options]); // ❌ New reference on every render
+  
+  return <div>Data loading...</div>;
+}
+
+// GOOD: Stable object reference with useMemo
+function Component() {
+  const options = useMemo(() => ({ 
+    id: userId, 
+    sort: 'asc' 
+  }), [userId]); // Only changes when userId changes
+  
+  // This effect only runs when userId changes
+  useEffect(() => {
+    fetchData(options);
+  }, [options]); // ✅ Stable reference between renders
+  
+  return <div>Data loading...</div>;
+}`} />
         </li>
       </ul>
     </div>
