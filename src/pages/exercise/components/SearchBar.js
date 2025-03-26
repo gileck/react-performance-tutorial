@@ -2,8 +2,6 @@ import React, { useState, memo } from 'react';
 import { highlightUpdates } from './utils';
 import styles from '@/styles/Exercise.module.css';
 
-// Problem: This component is memoized with React.memo,
-// but it still re-renders unnecessarily because it receives a new function reference on each render
 const SearchBar = memo(({ onSearch }) => {
   console.log('SearchBar rendering');
   const [inputValue, setInputValue] = useState('');

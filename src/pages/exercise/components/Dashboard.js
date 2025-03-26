@@ -40,19 +40,14 @@ const Dashboard = () => {
     fetchProducts();
   }, [setProducts]);
 
-  // Problem: Creating new function reference on every render
-  // This will cause SearchBar to re-render unnecessarily even with React.memo
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
 
-  // Problem: Creating new function reference on every render
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
 
-  // Problem: Creating new object on every render
-  // This will break memoization in FilterPanel
   const filterOptions = {
     categories: ['Electronics', 'Clothing', 'Home', 'Books'],
     priceRange: [0, 1000],
@@ -66,17 +61,14 @@ const Dashboard = () => {
         <Sidebar />
         <main className={styles.mainContent}>
           <div className={styles.topBar}>
-            {/* Problem: Inline function prop */}
             <SearchBar onSearch={(term) => handleSearch(term)} />
             
-            {/* Problem: Inline object prop */}
             <FilterPanel options={filterOptions} onFilterChange={handleFilterChange} />
             
             <UserProfile />
           </div>
           
           <div className={styles.panels}>
-            {/* Problem: Children props breaking memoization */}
             <StatisticsPanel>
               <div className={styles.statsContent}>
                 <h3>Sales Overview</h3>

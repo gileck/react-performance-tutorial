@@ -7,8 +7,6 @@ const Sidebar = () => {
   console.log('Sidebar rendering');
   const { theme } = useAppContext();
   
-  // This component only needs theme from context
-  // but will re-render when any context value changes
   
   const menuItems = [
     { id: 1, name: 'Dashboard', icon: '📊' },

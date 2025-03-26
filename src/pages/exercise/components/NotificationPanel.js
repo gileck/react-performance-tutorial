@@ -8,8 +8,6 @@ const NotificationPanel = () => {
   const { notifications, setNotifications } = useAppContext();
   const [expanded, setExpanded] = useState(false);
   
-  // This component only needs notifications from context
-  // but will re-render when any context value changes
   
   const handleClearAll = () => {
     setNotifications([]);

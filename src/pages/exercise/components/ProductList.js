@@ -41,11 +41,8 @@ const ProductList = ({ searchTerm, filters }) => {
       result = result.filter(product => product.inStock);
     }
     
-    // Problem: This creates new object references for each product
-    // even if the actual data hasn't changed, causing unnecessary re-renders
     setFilteredProducts(result.map(product => ({
       ...product,
-      // Adding a timestamp to simulate changing data
       lastUpdated: new Date().toISOString()
     })));
   }, [products, searchTerm, filters]);
@@ -58,8 +55,6 @@ const ProductList = ({ searchTerm, filters }) => {
       ) : (
         <div className={styles.productsGrid}>
           {filteredProducts.map(product => (
-            // Problem: ProductCard will re-render unnecessarily
-            // even when the actual product data hasn't changed
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

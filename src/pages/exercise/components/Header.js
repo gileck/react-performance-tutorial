@@ -7,8 +7,6 @@ const Header = () => {
   console.log('Header rendering');
   const { theme, setTheme, user, notifications } = useAppContext();
   
-  // This component re-renders whenever any context value changes
-  // even though it only uses theme, user, and notifications
   
   return highlightUpdates(
     <header className={`${styles.header} ${styles[theme]}`}>

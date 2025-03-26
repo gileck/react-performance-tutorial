@@ -9,15 +9,13 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
   
-  // Problem: Missing dependency in useCallback
-  // This function uses editedUser but doesn't include it in the dependency array
   const handleSave = useCallback(() => {
     setUser(editedUser);
     setIsEditing(false);
     
     // Simulate API call to save user data
     console.log('Saving user data:', editedUser);
-  }, []); // Missing dependencies: editedUser
+  }, []); 
   
   const handleEdit = () => {
     setIsEditing(true);

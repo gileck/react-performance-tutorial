@@ -2,8 +2,6 @@ import React from 'react';
 import { highlightUpdates } from './utils';
 import styles from '@/styles/Exercise.module.css';
 
-// Problem: This component is not memoized with React.memo
-// It will re-render whenever its parent re-renders, even if props haven't changed
 const ProductCard = ({ product }) => {
   console.log(`ProductCard rendering: ${product.name}`);
   
