@@ -4,6 +4,11 @@ import styles from '@/styles/Exercise.module.css';
 
 const ProductCard = ({ product }) => {
   console.log(`ProductCard rendering: ${product.name}`);
+
+  const handleAddToCart = (product) => {
+    // Simulate adding to cart
+    console.log('Adding to cart:', product.name);
+  };
   
   // Simulate expensive rendering
   const start = performance.now();
@@ -29,7 +34,7 @@ const ProductCard = ({ product }) => {
             <span className={styles.outOfStock}>Out of Stock</span>
           )}
         </p>
-        <button className={styles.addToCart}>Add to Cart</button>
+        <button className={styles.addToCart} onClick={() => handleAddToCart(product)}>Add to Cart</button>
       </div>
     </div>
   );
