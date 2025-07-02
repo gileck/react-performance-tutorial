@@ -5,10 +5,64 @@ import CodeHighlight from '@/components/CodeHighlight';
 const Introduction = () => {
   return (
     <div className={styles.intro}>
-      <h2>Context Performance Optimization</h2>
+      <h2>What is React Context?</h2>
       <p>
-        React Context is a powerful tool for sharing state across components, but it can
-        cause performance issues if not used carefully. The main challenges are:
+        React Context provides a way to pass data through the component tree without having to pass props down manually at every level. It's designed to share data that can be considered "global" for a tree of React components.
+      </p>
+      
+      <h3>Common Use Cases</h3>
+      <p>Context is typically used for data like:</p>
+      <ul>
+        <li><strong>Theme (colors, fonts)</strong> - Components throughout your app need to know the current theme</li>
+        <li><strong>User authentication</strong> - Many components need to know if a user is logged in</li>
+        <li><strong>Language/locale</strong> - For internationalization across your app</li>
+        <li><strong>App-wide settings</strong> - Configuration that affects multiple components</li>
+      </ul>
+
+      <h3>Basic Theme Example</h3>
+      <CodeHighlight code={`// Creating a theme context
+const ThemeContext = createContext();
+
+// Theme provider component
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light');
+  
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+  
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+// Using the context in a component
+const Header = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  
+  return (
+    <header className={\`header-\${theme}\`}>
+      <button onClick={toggleTheme}>
+        Switch to {theme === 'light' ? 'dark' : 'light'} mode
+      </button>
+    </header>
+  );
+};
+
+// App structure
+const App = () => (
+  <ThemeProvider>
+    <Header />
+    <MainContent />
+    <Footer />
+  </ThemeProvider>
+);`} />
+
+      <h2>Context Performance Challenges</h2>
+      <p>
+        While Context is powerful, it can cause performance issues if not used carefully. The main challenges are:
       </p>
       
       <ul>

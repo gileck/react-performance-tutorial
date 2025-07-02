@@ -16,6 +16,47 @@ const MemoizedExpensiveComponent = React.memo(ExpensiveComponent);
 const SimpleComponent = () => <div>Hello World</div>;`} />
         </li>
         <li>
+          <strong>Avoid side effects in memoized components</strong> - React's Strict Mode will render components twice in development to help detect issues
+          <CodeHighlight code={`// BAD: Side effect in component body
+const MemoizedComponent = React.memo(function Component(props) {
+  // This will run twice in Strict Mode!
+  saveToDatabase(props.data);
+  
+  return <div>{props.data.name}</div>;
+});
+
+// GOOD: Use useEffect for side effects
+const MemoizedComponent = React.memo(function Component(props) {
+  useEffect(() => {
+    // This will still run twice in Strict Mode,
+    // but React handles cleanup between runs
+    saveToDatabase(props.data);
+  }, [props.data]);
+  
+  return <div>{props.data.name}</div>;
+});`} />
+        </li>
+        <li>
+          <strong>Consider component composition</strong> - Sometimes it's better to pass components as props instead of using React.memo
+          <CodeHighlight code={`// Alternative: Component composition
+const Container = React.memo(({ header, content, footer }) => (
+  <div>
+    <div className="header">{header}</div>
+    <div className="content">{content}</div>
+    <div className="footer">{footer}</div>
+  </div>
+));
+
+// Usage: Pass components as props
+const Parent = () => (
+  <Container
+    header={<Header />}
+    content={<Content />}
+    footer={<Footer />}
+  />
+);`} />
+        </li>
+        <li>
           <strong>Custom comparison function</strong> - You can provide a custom comparison function 
           as a second parameter to React.memo
           <CodeHighlight code={`// Custom comparison function

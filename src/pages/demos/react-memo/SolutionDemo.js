@@ -7,12 +7,10 @@ import CodeHighlight from '@/components/CodeHighlight';
 const MemoizedExpensiveComponent = React.memo(ExpensiveComponent);
 const SolutionDemo = () => {
   const [count, setCount] = useState(0);
-  // Create a key that changes on each render to force re-render of parent
   const renderKey = useRef(0);
   
   const handleIncrement = () => {
     setCount(count + 1);
-    // Increment the key to force re-render of parent
     renderKey.current += 1;
   };
   
@@ -32,13 +30,11 @@ const SolutionDemo = () => {
         </button>
         
         <div className={styles.componentsContainer}>
-          {/* The key doesn't change for each component, so they won't re-render if memoized */}
           <MemoizedExpensiveComponent label="Memoized Component A" key="memo-a" />
           <MemoizedExpensiveComponent label="Memoized Component B" key="memo-b" />
-          <MemoizedExpensiveComponent label="Memoized Component C" key="memo-c" />
         </div>
         
-        <CodeHighlight code={`// Create a memoized version of the component
+        <CodeHighlight code={`// Create a memoized version
 const MemoizedExpensiveComponent = React.memo(ExpensiveComponent);
 
 function ParentComponent() {
@@ -53,24 +49,18 @@ function ParentComponent() {
       {/* These won't re-render when parent re-renders */}
       <MemoizedExpensiveComponent label="Component A" />
       <MemoizedExpensiveComponent label="Component B" />
-      <MemoizedExpensiveComponent label="Component C" />
     </>
   );
 }`} />
         
         <div className={styles.explanation}>
-          <h3>What's happening?</h3>
           <p>
-            When you click the button, only the parent component re-renders. The memoized components
-            don't re-render because their props haven't changed.
+            <strong>What's happening?</strong> Only the parent re-renders when you click the button. 
+            The memoized components skip re-rendering because their props haven't changed.
           </p>
           <p>
-            Check the browser console - you'll notice the memoized components only render once,
-            not on every button click. Notice how the border highlight only appears on the initial render.
-          </p>
-          <p>
-            <strong>How it works:</strong> React.memo performs a shallow comparison of props. If the props
-            haven't changed, React skips rendering the component and reuses the last rendered result.
+            <strong>How it works:</strong> React.memo performs a shallow comparison of props. 
+            If unchanged, React reuses the last rendered result.
           </p>
         </div>
       </div>

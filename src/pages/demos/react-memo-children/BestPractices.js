@@ -37,26 +37,7 @@ const ParentComponent = ({ userId, userData }) => {
   return <Container>{userChildren}</Container>;
 };`} />
         </li>
-        <li>
-          <strong>Consider Component Composition</strong> - Sometimes it's better to pass components as props
-          <CodeHighlight code={`// Alternative: Component composition
-const Container = React.memo(({ header, content, footer }) => (
-  <div>
-    <div className="header">{header}</div>
-    <div className="content">{content}</div>
-    <div className="footer">{footer}</div>
-  </div>
-));
 
-// Usage: Pass components as props
-const Parent = () => (
-  <Container
-    header={<Header />}
-    content={<Content />}
-    footer={<Footer />}
-  />
-);`} />
-        </li>
         <li>
           <strong>Extract Complex Children</strong> - Move complex child structures to separate components
           <CodeHighlight code={`// Good: Extract complex children

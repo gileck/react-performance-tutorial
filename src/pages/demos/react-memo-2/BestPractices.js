@@ -51,32 +51,7 @@ function MyComponent() {
   }
 );`} />
         </li>
-        <li>
-          <strong>Avoid side effects in memoized components</strong> - React's Strict Mode will render components twice in development to help detect issues
-          <CodeHighlight code={`// BAD: Side effect in component body
-const MemoizedComponent = React.memo(function Component(props) {
-  // This will run twice in Strict Mode!
-  saveToDatabase(props.data);
-  
-  return <div>{props.data.name}</div>;
-});
 
-// GOOD: Use useEffect for side effects
-const MemoizedComponent = React.memo(function Component(props) {
-  useEffect(() => {
-    // This will still run twice in Strict Mode,
-    // but React handles cleanup between runs
-    saveToDatabase(props.data);
-    
-    // Optional cleanup function
-    return () => {
-      // Clean up any resources if needed
-    };
-  }, [props.data]);
-  
-  return <div>{props.data.name}</div>;
-});`} />
-        </li>
         <li>
           <strong>Use useMemo as an optimization, not a fix</strong> - If your code doesn't work without useMemo, there's likely an underlying issue to address first.
           <div>Keep your rendering logic pure. If re-rendering a component causes a problem or produces some noticeable visual artifact, it's a bug in your component! Fix the bug instead of adding memoization.</div>
