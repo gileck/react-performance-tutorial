@@ -26,8 +26,11 @@ const SolutionDemo = () => {
     <div className={styles.demoSection}>
       <h2>Solution: Memoize the Children</h2>
       <p>
-        By wrapping the children in useMemo, we maintain stable references between renders.
-        This allows React.memo to work effectively on the Container components.
+        By wrapping the children in useMemo, we maintain a stable reference for the
+        <code>children</code> prop. This primarily prevents the memoized parent
+        <code>Container</code> from re-rendering, because its props (including
+        <code>children</code>) are shallow-equal between renders. As a consequence, the
+        children also avoid unnecessary re-renders.
       </p>
       
       <div className={styles.demoContainer}>
@@ -50,18 +53,33 @@ const SolutionDemo = () => {
         </div>
         
         <CodeHighlight code={`// Solution: Memoize children with useMemo
+// Define and memoize the container within this example for clarity
+const Container = React.memo(({ children, label }) => {
+  return (
+    <div>
+      <h3>{label}</h3>
+      {children}
+    </div>
+  );
+});
+
+// Memoized child
+const ExpensiveChild = React.memo(({ label }) => {
+  return <div>{label}</div>;
+});
+
 const ParentComponent = () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = React.useState(0);
   
   // Create stable references for children
-  const containerAChildren = useMemo(() => (
+  const containerAChildren = React.useMemo(() => (
     <>
       <ExpensiveChild label="Child A1" />
       <ExpensiveChild label="Child A2" />
     </>
   ), []); // Empty deps = never changes
   
-  const containerBChildren = useMemo(() => (
+  const containerBChildren = React.useMemo(() => (
     <>
       <ExpensiveChild label="Child B1" />
       <ExpensiveChild label="Child B2" />
@@ -84,20 +102,19 @@ const ParentComponent = () => {
       </Container>
     </>
   );
-};</code>`} />
+};`} />
         
         <div className={styles.explanation}>
           <h3>What's happening?</h3>
           <p>
-            Now when you click the button, neither the containers nor their children
-            re-render. This is because we've used useMemo to create stable references
-            for the children JSX.
+            We are optimizing the <strong>parent</strong> (the memoized <code>Container</code>) by stabilizing
+            its <code>children</code> prop. React.memo performs a shallow comparison of props; since the
+            <code>children</code> reference is the same between renders, the <code>Container</code> does not
+            re-render.
           </p>
           <p>
-            The children are only created once (when the component mounts) and then
-            those same references are reused for every render. When React.memo
-            compares the Container's props, it sees the same children reference and
-            prevents the re-render.
+            The child elements are created once (on mount) and the same references are reused on subsequent
+            renders, so both the parent <em>and</em> the child avoid unnecessary re-renders.
           </p>
           <p>
             Watch the border highlights - you'll see that nothing re-renders when you

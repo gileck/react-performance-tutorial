@@ -38,6 +38,20 @@ const ProblemDemo = () => {
         </div>
         
         <CodeHighlight code={`// Problem: React.memo isn't enough
+// Memoized components (as in this demo)
+const Container = React.memo(({ children, label }) => {
+  return (
+    <div>
+      <h3>{label}</h3>
+      {children} // New reference on every parent render
+    </div>
+  );
+});
+
+const ExpensiveChild = React.memo(({ label }) => {
+  return <div>{label}</div>;
+});
+
 const ParentComponent = () => {
   const [count, setCount] = useState(0);
   
@@ -59,17 +73,7 @@ const ParentComponent = () => {
       </Container>
     </>
   );
-};
-
-// Even with React.memo, containers will re-render
-const Container = React.memo(({ children, label }) => {
-  return (
-    <div>
-      <h3>{label}</h3>
-      {children} {/* New reference on every parent render */}
-    </div>
-  );
-});</code>`} />
+};`} />
         
         <div className={styles.explanation}>
           <h3>What's happening?</h3>

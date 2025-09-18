@@ -73,6 +73,32 @@ function FixedComponent() {
   
   return <div>{expensiveData}</div>;
 }`} />
+          <CodeHighlight code={`// Example: \"Buggy component\" (do not use memoization to hide bugs)
+function BuggyComponent() {
+  React.useEffect(() => {
+    console.log('fetching data');
+  }, []);
+  return (
+    <div>
+      <h1>Buggy Component</h1>
+    </div>
+  );
+}
+
+const BuggyComponentMemo = React.memo(BuggyComponent);
+
+function Example() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div>
+      <BuggyComponent />
+      {/** <BuggyComponentMemo /> */}
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}`} />
           
         </li>
         <li>

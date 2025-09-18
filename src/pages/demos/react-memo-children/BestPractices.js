@@ -23,6 +23,25 @@ const ParentComponent = () => {
 };`} />
         </li>
         <li>
+          <strong>Memoize a Single Child for a Memoized Container</strong> - Stabilize the children prop to prevent parent re-renders
+          <CodeHighlight code={`// Prevent parent (container) re-renders by memoizing a single child
+const ExpensiveContainer = ({ children }) => {
+  return <div>{children}</div>;
+};
+
+const ExpensiveContainerMemo = React.memo(ExpensiveContainer);
+
+function Example() {
+  const childMemo = useMemo(() => <Child />, []);
+  
+  return (
+    <ExpensiveContainerMemo>
+      {childMemo}
+    </ExpensiveContainerMemo>
+  );
+}`} />
+        </li>
+        <li>
           <strong>Include Dependencies When Needed</strong> - Add dependencies to useMemo when children need dynamic values
           <CodeHighlight code={`// Good: Include necessary dependencies
 const ParentComponent = ({ userId, userData }) => {
